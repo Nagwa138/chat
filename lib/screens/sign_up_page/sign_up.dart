@@ -1,38 +1,17 @@
-import './screens/home_page/home.dart';
-import 'package:flutter/material.dart';
+import 'package:chat_app/screens/home_page/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import './screens/sign_up_page/sign_up.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import '../../modules/authentication.dart';
+import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+import '../../main.dart';
+
+class SignUp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Sign in'),
-    );
-  }
+  _SignUpState createState() => _SignUpState();
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _SignUpState extends State<SignUp> {
   String _email , _password;
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -43,15 +22,16 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.deepPurpleAccent[100],
 
       body:
+
       SafeArea(
         child: Center(
           child: Container(
             height: 340,
-margin: EdgeInsets.all(20),
-padding: EdgeInsets.all(20),
+            margin: EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               borderRadius:BorderRadius.all( Radius.circular(20)),
-              color: Colors.white,
+              color: Colors.white
             ),
             child: Form(
               key:_formKey,
@@ -62,13 +42,13 @@ padding: EdgeInsets.all(20),
                     style: TextStyle(color: Colors.black),
                     validator: (input){
                       if(input.isEmpty){
-                          return 'Please type email';
+                        return 'Please type email';
                       }
                     },
                     onSaved: (input) {
                       _email = input;
-                    emailController.clear();
-                      },
+                      emailController.clear();
+                    },
                     decoration: InputDecoration(
                       labelText: 'Email',
 
@@ -94,25 +74,29 @@ padding: EdgeInsets.all(20),
                         labelText: 'Password'
                     ),
                   ),
-                  SizedBox(height: 30,),
+                  SizedBox(height: 20,),
                   RaisedButton(
                     color: Colors.amber,
                     onPressed: (){
-                      signIn();
+                        signUp();
                     },
-                    child: Text('Login'),
+                    child: Text('Sign Up'),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 20,),
 
-                  RaisedButton(
-                    color: Colors.indigo,
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUp()));
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Already have an account ? ' , style: TextStyle(color: Colors.grey[600]),) ,
+                      TextButton(
 
-                    },
-                    child: Text('Sign Up' , style: TextStyle(color: Colors.white),),
+                        onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MyApp()));
+                        },
+                        child: Text('Login' , style: TextStyle(color: Colors.blue),),
+                      ),
+                    ],
                   ),
-
                 ],
               ),
             ),
@@ -122,16 +106,17 @@ padding: EdgeInsets.all(20),
     );
   }
 
-  Future <void> signIn() async {
+
+
+  Future <void> signUp() async {
     final formState = _formKey.currentState;
     if(formState.validate()){
       formState.save();
       try{
-        AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
-        FirebaseUser user = result.user;
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage(user :user)));
+          Authentication auth = Authentication();
+          auth.signUp(_email, _password , context);
       } catch (e){
-        print(e);
+        print(e.message);
       }
     }
   }
