@@ -40,7 +40,6 @@ class _SignUpState extends State<SignUp> {
                       if (input.isEmpty) {
                         return 'Please type email';
                       }
-                      return '';
                     },
                     onSaved: (input) {
                       _email = input;

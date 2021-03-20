@@ -13,44 +13,50 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-      AppBar(
+      appBar: AppBar(
         centerTitle: true,
-      title: Text('Home'),
+        title: Text('Home'),
         actions: [
-          IconButton(icon: Icon(Icons.logout),
-          onPressed: (){
-            _signOut();
-          },
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              _signOut();
+            },
           )
         ],
-    ),
-      body:
-      Column(
+      ),
+      body: Column(
         children: [
-
           Container(
-              padding: EdgeInsets.only(top: 150 , bottom: 20),
-              child: Center(child: Text('${widget.user.email}'),),),
+            padding: EdgeInsets.only(top: 150, bottom: 20),
+            child: Center(
+              child: Text('${widget.user.email}'),
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            RaisedButton(
-              color: Colors.indigo,
-              onPressed: (){
-
-              },
-              child: Text('Chats' , style: TextStyle(color: Colors.white),),
-            ),
-SizedBox(width: 20,),
-            RaisedButton(
-              color: Colors.indigo,
-              onPressed: (){
-
-              },
-              child: Text('Tasks' , style: TextStyle(color: Colors.white),),
-            ),
-          ],)
+              RaisedButton(
+                color: Colors.indigo,
+                onPressed: () {},
+                child: Text(
+                  'Chats',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              RaisedButton(
+                color: Colors.indigo,
+                onPressed: () {},
+                child: Text(
+                  'Tasks',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -58,7 +64,6 @@ SizedBox(width: 20,),
 
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>MyApp()));
-
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp()));
   }
 }
